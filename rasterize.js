@@ -183,16 +183,35 @@ function renderTriangles() {
     // define the modeling matrix for the first set 
     inputTriangles[0].mMatrix = mat4.create(); // modeling mat for tri set
     var setCenter = vec3.fromValues(.25,.75,0);  // center coords of tri set 
+    var setMovedTri = vec3.fromValues(-1.0, -1.0, 0)
+    var setMovedSquare = vec3.fromValues(-1.0, -1.2, 0)
+    var scaleSquare = vec3.fromValues(2.0, 2.0, 1.0)
+
+    // First tri
     mat4.fromTranslation(inputTriangles[0].mMatrix,vec3.negate(vec3.create(),setCenter)); // translate to origin
     mat4.multiply(inputTriangles[0].mMatrix,
-                  mat4.fromRotation(mat4.create(),Math.PI/2,vec3.fromValues(0,0,1)),
-                  inputTriangles[0].mMatrix); // rotate 90 degs
+                  mat4.fromRotation(mat4.create(),3 * Math.PI/4,vec3.fromValues(0,0,1)),
+                  inputTriangles[0].mMatrix); // rotate 135 degs
     mat4.multiply(inputTriangles[0].mMatrix,
                   mat4.fromTranslation(mat4.create(),setCenter),
                   inputTriangles[0].mMatrix); // move back to center
+    mat4.multiply(inputTriangles[0].mMatrix,
+                  mat4.fromTranslation(mat4.create(),setMovedTri),
+                  inputTriangles[0].mMatrix);
         
     // define the modeling matrix for the second set
     inputTriangles[1].mMatrix = mat4.create();
+
+    mat4.fromTranslation(inputTriangles[1].mMatrix,vec3.negate(vec3.create(),setCenter)); // translate to origin
+    mat4.multiply(inputTriangles[1].mMatrix,
+                  mat4.fromScaling(mat4.create(),scaleSquare),
+                  inputTriangles[1].mMatrix); // scale 2x about origin
+    mat4.multiply(inputTriangles[1].mMatrix,
+                  mat4.fromRotation(mat4.create(),3 * Math.PI/4,vec3.fromValues(0,0,1)),
+                  inputTriangles[1].mMatrix); // rotate 135 degs
+    mat4.multiply(inputTriangles[1].mMatrix,
+                  mat4.fromTranslation(mat4.create(),setMovedSquare),
+                  inputTriangles[1].mMatrix);
     
     for (var whichTriSet=0; whichTriSet<numTriangleSets; whichTriSet++) { 
         
